@@ -1,27 +1,32 @@
 package main
 
 import (
+	"io"
 	"os"
 	"os/exec"
-	"text/template"
 	"strings"
-	"io"
+	"text/template"
+	"flag"
 )
 
-var t *template.Template
+var (
+	t *template.Template
+	out = ""
+)
 
 func init() {
 	t = template.Must(template.New("main").Parse(
-	`package {{.Package}}
+		`package {{.Package}}
 
 const (
 	Revision = "{{.Revision}}"
 )
 `))
+	flag.StringVar(&out, "o", out, "Write to file, defaults to stdout")
 }
 
 type Build struct {
-	Package string
+	Package  string
 	Revision string
 }
 
@@ -31,7 +36,7 @@ func Generate(out io.Writer) error {
 		return err
 	}
 	m := Build{
-		Package: "main",
+		Package:  "main",
 		Revision: strings.TrimSpace(string(revision)),
 	}
 	err = t.Execute(out, m)
@@ -39,8 +44,19 @@ func Generate(out io.Writer) error {
 }
 
 func main() {
-	if err := Generate(os.Stdout); err != nil {
+	flag.Parse()
+	fh := os.Stdout
+	var err error
+	if out != "" {
+		fh, err = os.Create(out)
+		if err != nil {
+			print(err.Error())
+			os.Exit(1)
+		}
+		defer fh.Close()
+	}
+	
+	if err := Generate(fh); err != nil {
 		os.Exit(1)
 	}
 }
-

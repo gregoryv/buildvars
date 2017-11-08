@@ -1,10 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"io/ioutil"
 	"os/exec"
 	"testing"
-	"bytes"
 )
 
 func Test_Generate(t *testing.T) {
