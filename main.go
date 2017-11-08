@@ -2,13 +2,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"io"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
 	"text/template"
-	"log"
-	"fmt"
 )
 
 var (
@@ -27,18 +27,18 @@ const (
 	flag.StringVar(&out, "o", out, "Write to file, defaults to stdout")
 }
 
-type Build struct {
+type Stamp struct {
 	Package  string
 	Revision string
 }
 
-func NewBuild() (build *Build, err error) {
+func NewStamp() (build *Stamp, err error) {
 	var revision []byte
 	revision, err = exec.Command("git", "rev-parse", "HEAD").CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("%s: %s", revision, err)
 	}
-	build = &Build{
+	build = &Stamp{
 		Package:  "main",
 		Revision: strings.TrimSpace(string(revision)),
 	}
@@ -46,7 +46,7 @@ func NewBuild() (build *Build, err error) {
 }
 
 func Generate(out io.Writer) error {
-	m, err := NewBuild()
+	m, err := NewStamp()
 	if err != nil {
 		return err
 	}
@@ -59,7 +59,7 @@ func main() {
 	fh := os.Stdout
 	var err error
 	er := log.New(os.Stderr, "", 0)
-	
+
 	if out != "" {
 		fh, err = os.Create(out)
 		if err != nil {

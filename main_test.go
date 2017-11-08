@@ -24,7 +24,7 @@ func Test_Generate(t *testing.T) {
 }
 
 func Test_NewBuild(t *testing.T) {
-	build, err := NewBuild()
+	build, err := NewStamp()
 	if err != nil {
 		t.Fatal(err)
 	}
