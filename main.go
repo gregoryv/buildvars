@@ -2,7 +2,9 @@ package main
 
 import (
 	"os"
+	"os/exec"
 	"text/template"
+	"strings"
 )
 
 var t *template.Template
@@ -13,7 +15,7 @@ func init() {
 	`package {{.Package}}
 
 const (
-	Version = "{{.Version}}"
+	Revision = "{{.Revision}}"
 )
 `)
 	if err != nil {
@@ -23,15 +25,20 @@ const (
 
 type Build struct {
 	Package string
-	Version string
+	Revision string
 }
 
 func main() {
+	revision, err := exec.Command("git", "rev-parse", "HEAD").Output()
+	if err != nil {
+		print(err.Error())
+		os.Exit(1)
+	}
 	m := Build{
 		Package: "main",
-		Version: "1.0",
+		Revision: strings.TrimSpace(string(revision)),
 	}
-	err := t.Execute(os.Stdout, m)
+	err = t.Execute(os.Stdout, m)
 	if err != nil {
 		panic(err)
 	}
