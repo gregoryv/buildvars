@@ -13,3 +13,10 @@ func Test_NewStamp(t *testing.T) {
 		t.Errorf("NewBuild() should return a build")
 	}
 }
+
+func Test_GoTemplate(t *testing.T) {
+	tpl := GoTemplate()
+	if tpl == nil {
+		t.Error("GoTemplate() should always return a template")
+	}
+}
