@@ -1,8 +1,8 @@
 package stamp
 
 import (
-	"testing"
 	"os"
+	"testing"
 )
 
 func Test_NewStamp(t *testing.T) {
@@ -13,11 +13,14 @@ func Test_NewStamp(t *testing.T) {
 	if build == nil {
 		t.Errorf("NewBuild() should return a build")
 	}
+	wd, _ := os.Getwd()
+	defer os.Chdir(wd)
 	os.Chdir("/")
 	_, err = NewStamp()
 	if err == nil {
 		t.Error("NewStamp() should fail when not in git repository")
 	}
+
 }
 
 func Test_GoTemplate(t *testing.T) {

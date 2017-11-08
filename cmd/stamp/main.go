@@ -3,8 +3,8 @@
 package main
 
 import (
-	"github.com/gregoryv/stamp"
 	"flag"
+	"github.com/gregoryv/stamp"
 	"log"
 	"os"
 )
