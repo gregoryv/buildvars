@@ -2,6 +2,7 @@ package stamp
 
 import (
 	"testing"
+	"os"
 )
 
 func Test_NewStamp(t *testing.T) {
@@ -11,6 +12,11 @@ func Test_NewStamp(t *testing.T) {
 	}
 	if build == nil {
 		t.Errorf("NewBuild() should return a build")
+	}
+	os.Chdir("/")
+	_, err = NewStamp()
+	if err == nil {
+		t.Error("NewStamp() should fail when not in git repository")
 	}
 }
 
