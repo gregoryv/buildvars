@@ -1,22 +1,25 @@
 package main
 
 import (
-	"testing"
-	"os/exec"
 	"io/ioutil"
+	"os/exec"
+	"testing"
+	"bytes"
 )
 
-func Test_x(t *testing.T) {
-	out, err := exec.Command("./go-buildvars").Output()
+func Test_Generate(t *testing.T) {
+	var buf []byte
+	out := bytes.NewBuffer(buf)
+	err := Generate(out)
 	if err != nil {
-		t.Errorf("%s: %s", out, err)
+		t.Errorf("%s: %s", out.String(), err)
 	}
-	ioutil.WriteFile("x.go", out, 0755)
+	ioutil.WriteFile("x.go", out.Bytes(), 0755)
 
 	// Check that x.go is compilable
-	out, err = exec.Command("go", "build", ".").Output()
+	buf, err = exec.Command("go", "build", ".").Output()
 	if err != nil {
-		t.Errorf("%s: %s", out, err)
+		t.Errorf("%s: %s", buf, err)
 	}
-	
+
 }

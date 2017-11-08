@@ -5,22 +5,19 @@ import (
 	"os/exec"
 	"text/template"
 	"strings"
+	"io"
 )
 
 var t *template.Template
 
 func init() {
-	var err error
-	t, err = template.New("main").Parse(
+	t = template.Must(template.New("main").Parse(
 	`package {{.Package}}
 
 const (
 	Revision = "{{.Revision}}"
 )
-`)
-	if err != nil {
-		panic(err)
-	}
+`))
 }
 
 type Build struct {
@@ -28,18 +25,22 @@ type Build struct {
 	Revision string
 }
 
-func main() {
+func Generate(out io.Writer) error {
 	revision, err := exec.Command("git", "rev-parse", "HEAD").Output()
 	if err != nil {
-		print(err.Error())
-		os.Exit(1)
+		return err
 	}
 	m := Build{
 		Package: "main",
 		Revision: strings.TrimSpace(string(revision)),
 	}
-	err = t.Execute(os.Stdout, m)
-	if err != nil {
-		panic(err)
+	err = t.Execute(out, m)
+	return err
+}
+
+func main() {
+	if err := Generate(os.Stdout); err != nil {
+		os.Exit(1)
 	}
 }
+
