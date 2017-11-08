@@ -1,4 +1,4 @@
 set -e
 GOPATH=$HOME
-go generate .
+go generate ./...
 go test -cover .

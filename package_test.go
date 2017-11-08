@@ -1,10 +1,10 @@
-package main
+package stamp
 
 import (
 	"testing"
 )
 
-func Test_NewBuild(t *testing.T) {
+func Test_NewStamp(t *testing.T) {
 	build, err := NewStamp()
 	if err != nil {
 		t.Fatal(err)

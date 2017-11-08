@@ -8,7 +8,7 @@ stamp parses out build information to embed into your binary
 
 Add to one of your main files
 
-    //go:generate go install github.com/gregoryv/stamp
+    //go:generate go install github.com/gregoryv/stamp/cmd/stamp
 	//go:generate stamp -o stamp.go
     package main
 	...
