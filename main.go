@@ -32,14 +32,23 @@ type Build struct {
 	Revision string
 }
 
-func Generate(out io.Writer) error {
-	revision, err := exec.Command("git", "rev-parse", "HEAD").CombinedOutput()
+func NewBuild() (build *Build, err error) {
+	var revision []byte
+	revision, err = exec.Command("git", "rev-parse", "HEAD").CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("%s: %s", revision, err)
+		return nil, fmt.Errorf("%s: %s", revision, err)
 	}
-	m := Build{
+	build = &Build{
 		Package:  "main",
 		Revision: strings.TrimSpace(string(revision)),
+	}
+	return
+}
+
+func Generate(out io.Writer) error {
+	m, err := NewBuild()
+	if err != nil {
+		return err
 	}
 	err = t.Execute(out, m)
 	return err

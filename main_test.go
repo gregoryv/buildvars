@@ -21,5 +21,14 @@ func Test_Generate(t *testing.T) {
 	if err != nil {
 		t.Errorf("%s: %s", buf, err)
 	}
+}
 
+func Test_NewBuild(t *testing.T) {
+	build, err := NewBuild()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if build == nil {
+		t.Errorf("NewBuild() should return a build")
+	}
 }
