@@ -1,16 +1,18 @@
 package main
 
 import (
+	"flag"
 	"io"
 	"os"
 	"os/exec"
 	"strings"
 	"text/template"
-	"flag"
+	"log"
+	"fmt"
 )
 
 var (
-	t *template.Template
+	t   *template.Template
 	out = ""
 )
 
@@ -31,9 +33,9 @@ type Build struct {
 }
 
 func Generate(out io.Writer) error {
-	revision, err := exec.Command("git", "rev-parse", "HEAD").Output()
+	revision, err := exec.Command("git", "rev-parse", "HEAD").CombinedOutput()
 	if err != nil {
-		return err
+		return fmt.Errorf("%s: %s", revision, err)
 	}
 	m := Build{
 		Package:  "main",
@@ -47,16 +49,19 @@ func main() {
 	flag.Parse()
 	fh := os.Stdout
 	var err error
+	er := log.New(os.Stderr, "", 0)
+	
 	if out != "" {
 		fh, err = os.Create(out)
 		if err != nil {
-			print(err.Error())
+			er.Printf("Failed to create %q: %s", out, err)
 			os.Exit(1)
 		}
 		defer fh.Close()
 	}
-	
+
 	if err := Generate(fh); err != nil {
+		er.Printf("Failed to generate build: %s", err)
 		os.Exit(1)
 	}
 }
