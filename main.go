@@ -1,9 +1,10 @@
+//go:generate go install github.com/gregoryv/stamp
+//go:generate stamp -o stamp.go
 package main
 
 import (
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"os/exec"
@@ -45,15 +46,6 @@ func NewStamp() (build *Stamp, err error) {
 	return
 }
 
-func Generate(out io.Writer) error {
-	m, err := NewStamp()
-	if err != nil {
-		return err
-	}
-	err = t.Execute(out, m)
-	return err
-}
-
 func main() {
 	flag.Parse()
 	fh := os.Stdout
@@ -61,16 +53,16 @@ func main() {
 	er := log.New(os.Stderr, "", 0)
 
 	if out != "" {
-		fh, err = os.Create(out)
-		if err != nil {
-			er.Printf("Failed to create %q: %s", out, err)
-			os.Exit(1)
+		if fh, err = os.Create(out); err != nil {
+			er.Fatalf("Failed to create %q: %s", out, err)
 		}
 		defer fh.Close()
 	}
-
-	if err := Generate(fh); err != nil {
-		er.Printf("Failed to generate build: %s", err)
-		os.Exit(1)
+	var m *Stamp
+	if m, err = NewStamp(); err != nil {
+		er.Fatalf("Failed to generate build: %s", err)
+	}
+	if err = t.Execute(fh, m); err != nil {
+		er.Fatalf("Failed to write go source: %s", err)
 	}
 }
