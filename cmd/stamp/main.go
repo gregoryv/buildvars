@@ -1,5 +1,5 @@
 //go:generate go install github.com/gregoryv/stamp/cmd/stamp
-//go:generate stamp -o stamp.go
+//go:generate stamp -go stamp.go
 package main
 
 import (
@@ -14,7 +14,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&out, "o", out, "Write to file, defaults to stdout")
+	flag.StringVar(&out, "go", out, "Write Go file, defaults to stdout")
 }
 
 func main() {
