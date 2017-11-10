@@ -1,8 +1,8 @@
 package stamp
 
 import (
-	"regexp"
 	"fmt"
+	"regexp"
 )
 
 type Versioner interface {

@@ -15,9 +15,15 @@ func init() {
 	goSource = template.Must(template.New("main").Parse(
 		`package {{.Package}}
 
-const (
-	Revision         = "{{.Revision}}"
-)
+type Stamp struct {
+	Revision string
+}
+
+func NewStamp() *Stamp {
+	return &Stamp{
+		Revision: "{{.Revision}}",
+	}
+}
 `))
 }
 
@@ -32,7 +38,7 @@ func GoTemplate() *template.Template {
 	return goSource
 }
 
-func NewStamp() (build *Stamp, err error) {
+func Parse() (build *Stamp, err error) {
 	var revision []byte
 	// todo refactor into Revisioner interface
 	revision, err = exec.Command("git", "rev-parse", "HEAD").CombinedOutput()

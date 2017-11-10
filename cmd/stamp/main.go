@@ -30,7 +30,7 @@ func main() {
 		defer fh.Close()
 	}
 	var m *stamp.Stamp
-	if m, err = stamp.NewStamp(); err != nil {
+	if m, err = stamp.Parse(); err != nil {
 		er.Fatalf("Failed to generate build: %s", err)
 	}
 	if err = stamp.GoTemplate().Execute(fh, m); err != nil {
