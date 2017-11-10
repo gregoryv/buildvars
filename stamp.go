@@ -15,15 +15,15 @@ func init() {
 	goSource = template.Must(template.New("main").Parse(
 		`package {{.Package}}
 
-type Stamp struct {
-	Revision string
+import "github.com/gregoryv/stamp"
+
+func init() {
+    s := &stamp.Stamp{
+	    Revision: "{{.Revision}}",
+    }
+    stamp.Use(s)
 }
 
-func NewStamp() *Stamp {
-	return &Stamp{
-		Revision: "{{.Revision}}",
-	}
-}
 `))
 }
 

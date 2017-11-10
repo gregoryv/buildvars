@@ -1,4 +1,3 @@
-//go:generate go install github.com/gregoryv/stamp/cmd/stamp
 //go:generate stamp -go stamp.go
 package main
 
@@ -15,10 +14,21 @@ var (
 
 func init() {
 	flag.StringVar(&out, "go", out, "Write Go file, defaults to stdout")
+	stamp.InitFlags()
 }
 
 func main() {
 	flag.Parse()
+	if stamp.Show {
+		stamp.Print()
+		os.Exit(0)
+	}
+	if stamp.Verbose {
+		stamp.PrintDetails()
+		os.Exit(0)
+	}
+
+
 	fh := os.Stdout
 	var err error
 	er := log.New(os.Stderr, "", 0)
