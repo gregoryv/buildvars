@@ -2,12 +2,13 @@ package stamp
 
 import (
 	"flag"
+	"fmt"
 )
 
 var (
 	Show    = false
 	Verbose = false
-	sp *Stamp
+	sp      *Stamp
 )
 
 func init() {
@@ -24,9 +25,9 @@ func InitFlags() {
 }
 
 func Print() {
-	print(sp.Revision)
+	fmt.Print(sp.Revision)
 }
 
 func PrintDetails() {
-	print(sp.Revision)
+	fmt.Print(sp.Revision)
 }
