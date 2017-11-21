@@ -25,12 +25,12 @@ Example main.go
 
 	func init() {
 		// Add -v and -vv flags
-	    stamp.InitFlags()
+		stamp.InitFlags()
 	}
 
 	func main() {
 		flag.Parse()
-	    if stamp.Show {
+		if stamp.Show {
 	        stamp.Print()
 		    os.Exit(0)
 		}
