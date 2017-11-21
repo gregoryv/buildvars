@@ -7,20 +7,22 @@ import (
 
 func ExamplePrint() {
 	s := &Stamp{
-		Revision: "x",
+		Revision: "rev",
+		ChangelogVersion: "1.0.0",
 	}
 	Use(s)
 	Print()
-	//output: x
+	//output: 1.0.0
 }
 
 func ExamplePrintDetails() {
 	s := &Stamp{
-		Revision: "x",
+		Revision: "rev",
+		ChangelogVersion: "1.0.0",
 	}
 	Use(s)
 	PrintDetails()
-	//output: x
+	//output: 1.0.0 rev
 }
 
 func TestInitFlags(t *testing.T) {

@@ -19,7 +19,9 @@ import "github.com/gregoryv/stamp"
 
 func init() {
     s := &stamp.Stamp{
+	    Package: "{{.Package}}",
 	    Revision: "{{.Revision}}",
+	    ChangelogVersion: "{{.ChangelogVersion}}",
     }
     stamp.Use(s)
 }
@@ -31,6 +33,7 @@ func init() {
 type Stamp struct {
 	Package  string
 	Revision string
+	ChangelogVersion string
 }
 
 // GoTemplate returns a go source template
@@ -38,10 +41,10 @@ func GoTemplate() *template.Template {
 	return goSource
 }
 
-func Parse() (build *Stamp, err error) {
+func Parse(repoRoot string) (build *Stamp, err error) {
 	var revision []byte
 	// todo refactor into Revisioner interface
-	revision, err = exec.Command("git", "rev-parse", "HEAD").CombinedOutput()
+	revision, err = exec.Command("git", "-C", repoRoot, "rev-parse", "HEAD").CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("%s: %s", revision, err)
 	}

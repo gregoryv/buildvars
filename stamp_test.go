@@ -8,7 +8,7 @@ import (
 )
 
 func Test_Parse(t *testing.T) {
-	build, err := Parse()
+	build, err := Parse(".")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -18,7 +18,7 @@ func Test_Parse(t *testing.T) {
 	wd, _ := os.Getwd()
 	defer os.Chdir(wd)
 	os.Chdir("/")
-	_, err = Parse()
+	_, err = Parse(".")
 	if err == nil {
 		t.Error("NewStamp() should fail when not in git repository")
 	}

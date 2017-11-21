@@ -25,9 +25,9 @@ func InitFlags() {
 }
 
 func Print() {
-	fmt.Print(sp.Revision)
+	fmt.Print(sp.ChangelogVersion)
 }
 
 func PrintDetails() {
-	fmt.Print(sp.Revision)
+	fmt.Printf("%s %s", sp.ChangelogVersion, sp.Revision)
 }
