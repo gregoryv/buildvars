@@ -24,15 +24,7 @@ func init() {
 
 func main() {
 	flag.Parse()
-	// Use the stamp our selves
-	if stamp.Show {
-		stamp.Print()
-		os.Exit(0)
-	}
-	if stamp.Verbose {
-		stamp.PrintDetails()
-		os.Exit(0)
-	}
+	stamp.AsFlagged()
 
 	var err error
 	fh := os.Stdout

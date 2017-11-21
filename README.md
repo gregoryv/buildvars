@@ -1,11 +1,15 @@
 # README
 
-stamp - Parses out build information to embed into your binary
+[stamp](https://godoc.org/github.com/gregoryv/stamp) - Parses out build information to embed into your binary
 
 [![Build Status](https://travis-ci.org/gregoryv/stamp.svg?branch=master)](https://travis-ci.org/gregoryv/stamp)
 
-Normalize how version and build information makes it's way into your
-binaries.
+Normalize how version and build information makes it's way into your binaries.
+Generates code that can be used to add flags
+
+    -v    Print version and exit
+    -vv
+          Print version with details and exit
 
 ## Usage
 
@@ -30,14 +34,7 @@ Example main.go
 
 	func main() {
 		flag.Parse()
-		if stamp.Show {
-	        stamp.Print()
-		    os.Exit(0)
-		}
-		if stamp.Verbose {
-			stamp.PrintDetails()
-			os.Exit(0)
-		}
+		stamp.AsFlagged()
 		//...
 	}
 

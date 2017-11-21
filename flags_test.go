@@ -39,3 +39,17 @@ func TestInitFlags(t *testing.T) {
 		}
 	}
 }
+
+func TestAsFlagged(t *testing.T) {
+	AsFlagged()
+	exit = func(code int) {
+		if code != 0 {
+			t.Errorf("Should exit with code 0: %v", code)
+		}
+	}
+	Show = true
+	AsFlagged()
+	Show = false
+	Verbose = true
+	AsFlagged()
+}

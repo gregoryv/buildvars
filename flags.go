@@ -3,20 +3,23 @@ package stamp
 import (
 	"flag"
 	"fmt"
+	"os"
 )
 
 var (
 	Show    = false
 	Verbose = false
 	sp      *Stamp
+	exit = os.Exit
 )
 
 func init() {
 	sp = &Stamp{}
 }
 
-func Use(s *Stamp) {
-	sp = s
+// Use sets the stamp to use when printing details
+func Use(stamp *Stamp) {
+	sp = stamp
 }
 
 func InitFlags() {
@@ -30,4 +33,16 @@ func Print() {
 
 func PrintDetails() {
 	fmt.Printf("%s-%s", sp.ChangelogVersion, sp.Revision)
+}
+
+// AsFlagged shows information according to flags and exits with code 0
+func AsFlagged() {
+	if Show {
+		Print()
+		exit(0)
+	}
+	if Verbose {
+		PrintDetails()
+		exit(0)
+	}
 }
