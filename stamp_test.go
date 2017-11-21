@@ -7,26 +7,37 @@ import (
 	"testing"
 )
 
-func Test_Parse(t *testing.T) {
-	build, err := Parse(".")
+func TestNewStamp(t *testing.T) {
+	s := NewStamp()
+	exp := "unknown"
+	if s.Revision != exp {
+		t.Errorf("Default revision should be %q", exp)
+	}
+	if s.ChangelogVersion != exp {
+		t.Errorf("Default ChangelogVersion should be %q", exp)
+	}
+}
+
+func Test_Revision(t *testing.T) {
+	rev, err := Revision(".")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if build == nil {
-		t.Errorf("NewBuild() should return a build")
+	if rev == "unknown" {
+		t.Errorf("rev should returned %q", rev)
 	}
 	wd, _ := os.Getwd()
 	defer os.Chdir(wd)
 	os.Chdir("/")
-	_, err = Parse(".")
+	_, err = Revision(".")
 	if err == nil {
-		t.Error("NewStamp() should fail when not in git repository")
+		t.Error("Revision() should fail when not in git repository")
 	}
 
 }
 
 func Test_GoTemplate(t *testing.T) {
-	tpl := GoTemplate()
+	tpl := NewGoTemplate()
 	if tpl == nil {
 		t.Error("GoTemplate() should always return a template")
 	}

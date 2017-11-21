@@ -1,3 +1,4 @@
+// Package stamp parses build information from git repository
 package stamp
 
 import (
@@ -31,26 +32,29 @@ func init() {
 
 // Stamp collects identifying information about a software library
 type Stamp struct {
-	Package  string
-	Revision string
+	Package          string
+	Revision         string
 	ChangelogVersion string
 }
 
-// GoTemplate returns a go source template
-func GoTemplate() *template.Template {
+func NewStamp() *Stamp {
+	return &Stamp{
+		Package: "main",
+		Revision: "unknown",
+		ChangelogVersion: "unknown",
+	}
+}
+
+// NewGoTemplate returns a go source template
+func NewGoTemplate() *template.Template {
 	return goSource
 }
 
-func Parse(repoRoot string) (build *Stamp, err error) {
-	var revision []byte
-	// todo refactor into Revisioner interface
-	revision, err = exec.Command("git", "-C", repoRoot, "rev-parse", "--short", "HEAD").CombinedOutput()
+// Revision returns the short revision for HEAD
+func Revision(repoRoot string) (string, error) {
+	revision, err := exec.Command("git", "-C", repoRoot, "rev-parse", "--short", "HEAD").CombinedOutput()
 	if err != nil {
-		return nil, fmt.Errorf("%s: %s", revision, err)
+		return "unknown", fmt.Errorf("%s: %s", revision, err)
 	}
-	build = &Stamp{
-		Package:  "main",
-		Revision: strings.TrimSpace(string(revision)),
-	}
-	return
+	return strings.TrimSpace(string(revision)), nil
 }

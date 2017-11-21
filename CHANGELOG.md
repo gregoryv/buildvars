@@ -6,3 +6,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Render go source with build information
+- Version from CHANGELOG.md and revision using git rev-parse

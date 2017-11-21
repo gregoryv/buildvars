@@ -1,3 +1,5 @@
+//Command stamp generates go source code with build information.
+//
 //go:generate stamp -go build_stamp.go -clfile ../../CHANGELOG.md
 package main
 
@@ -44,8 +46,8 @@ func main() {
 		defer fh.Close()
 	}
 	// Create initial stamp by parsing repository for current revision
-	var m *stamp.Stamp
-	if m, err = stamp.Parse("."); err != nil {
+	m := stamp.NewStamp()
+	if m.Revision, err = stamp.Revision("."); err != nil {
 		er.Fatalf("Failed to generate build: %s", err)
 	}
 	// Set version from changelog
@@ -60,7 +62,7 @@ func main() {
 	}
 
 	// Write go code
-	if err = stamp.GoTemplate().Execute(fh, m); err != nil {
+	if err = stamp.NewGoTemplate().Execute(fh, m); err != nil {
 		er.Fatalf("Failed to write go source: %s", err)
 	}
 }

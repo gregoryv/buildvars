@@ -7,7 +7,7 @@ import (
 
 func ExamplePrint() {
 	s := &Stamp{
-		Revision: "rev",
+		Revision:         "rev",
 		ChangelogVersion: "1.0.0",
 	}
 	Use(s)
@@ -17,7 +17,7 @@ func ExamplePrint() {
 
 func ExamplePrintDetails() {
 	s := &Stamp{
-		Revision: "rev",
+		Revision:         "rev",
 		ChangelogVersion: "1.0.0",
 	}
 	Use(s)
