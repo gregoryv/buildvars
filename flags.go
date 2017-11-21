@@ -22,6 +22,7 @@ func Use(stamp *Stamp) {
 	sp = stamp
 }
 
+// Regiters -v and -vv flags
 func InitFlags() {
 	flag.BoolVar(&Show, "v", Show, "Print version and exit")
 	flag.BoolVar(&Verbose, "vv", Verbose, "Print version with details and exit")
