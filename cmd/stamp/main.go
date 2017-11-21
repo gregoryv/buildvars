@@ -1,4 +1,4 @@
-//go:generate stamp -go stamp.go -clfile ../../CHANGELOG.md
+//go:generate stamp -go build_stamp.go -clfile ../../CHANGELOG.md
 package main
 
 import (

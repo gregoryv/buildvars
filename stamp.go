@@ -44,7 +44,7 @@ func GoTemplate() *template.Template {
 func Parse(repoRoot string) (build *Stamp, err error) {
 	var revision []byte
 	// todo refactor into Revisioner interface
-	revision, err = exec.Command("git", "-C", repoRoot, "rev-parse", "HEAD").CombinedOutput()
+	revision, err = exec.Command("git", "-C", repoRoot, "rev-parse", "--short", "HEAD").CombinedOutput()
 	if err != nil {
 		return nil, fmt.Errorf("%s: %s", revision, err)
 	}

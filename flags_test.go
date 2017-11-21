@@ -22,7 +22,7 @@ func ExamplePrintDetails() {
 	}
 	Use(s)
 	PrintDetails()
-	//output: 1.0.0 rev
+	//output: 1.0.0-rev
 }
 
 func TestInitFlags(t *testing.T) {

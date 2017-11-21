@@ -29,5 +29,5 @@ func Print() {
 }
 
 func PrintDetails() {
-	fmt.Printf("%s %s", sp.ChangelogVersion, sp.Revision)
+	fmt.Printf("%s-%s", sp.ChangelogVersion, sp.Revision)
 }
