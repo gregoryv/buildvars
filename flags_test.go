@@ -5,25 +5,24 @@ import (
 	"testing"
 )
 
-// Used in examples
-var s *Stamp
-
-func init() {
-	s = &Stamp{
+func ExamplePrint() {
+	s := &Stamp{
 		Revision:         "rev",
 		ChangelogVersion: "1.0.2",
 	}
 	Use(s)
-}
-
-func ExamplePrint() {
 	Print()
 	//output: 1.0.2
 }
 
 func ExamplePrintDetails() {
+	s := &Stamp{
+		Revision:         "6e6046c",
+		ChangelogVersion: "1.0.0",
+	}
+	Use(s)
 	PrintDetails()
-	//output: 1.0.2-rev
+	//output: 1.0.0-6e6046c
 }
 
 func TestInitFlags(t *testing.T) {
