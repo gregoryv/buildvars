@@ -1,8 +1,6 @@
-# README
+[![Build Status](https://travis-ci.org/gregoryv/stamp.svg?branch=master)](https://travis-ci.org/gregoryv/stamp)
 
 [stamp](https://godoc.org/github.com/gregoryv/stamp) - Parses out build information to embed into your binary
-
-[![Build Status](https://travis-ci.org/gregoryv/stamp.svg?branch=master)](https://travis-ci.org/gregoryv/stamp)
 
 Normalize how version and build information makes it's way into your binaries.
 Generates code that can be used to add flags
@@ -11,7 +9,7 @@ Generates code that can be used to add flags
     -vv
           Print version with details and exit
 
-## Usage
+## Quick start
 
 Install
 
