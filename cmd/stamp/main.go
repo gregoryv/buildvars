@@ -25,41 +25,41 @@ func init() {
 	stamp.InitFlags()
 }
 
-var Usage = func() {
+func usage() {
 	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 	flag.PrintDefaults()
+	os.Exit(0)
 }
 
 func main() {
 	flag.Parse()
 	stamp.AsFlagged()
-
 	if help {
-		Usage()
-		os.Exit(0)
+		usage()
 	}
-
+	s := stamp.NewStamp()
+	stderr := log.New(os.Stderr, "", 0)
 	var err error
-	fh := os.Stdout
-	// Errors are written to stderr
-	er := log.New(os.Stderr, "", 0)
+	if s.Revision, err = stamp.Revision("."); err != nil {
+		stderr.Fatalf("Failed to generate build: %s", err)
+	}
+	s.ParseChangelog(clfile)
+	if err = writeGoSource(s, out); err != nil {
+		stderr.Fatalf("Failed to write go source: %s", err)
+	}
+}
 
-	if out != "" {
-		if fh, err = os.Create(out); err != nil {
-			er.Fatalf("Failed to create %q: %s", out, err)
+func writeGoSource(s *stamp.Stamp, file string) (err error) {
+	// Write go code
+	fh := os.Stdout
+	if file != "" {
+		if fh, err = os.Create(file); err != nil {
+			return
 		}
 		defer fh.Close()
 	}
-	// Create initial stamp by parsing repository for current revision
-	m := stamp.NewStamp()
-	if m.Revision, err = stamp.Revision("."); err != nil {
-		er.Fatalf("Failed to generate build: %s", err)
+	if err = stamp.NewGoTemplate().Execute(fh, s); err != nil {
+		return
 	}
-	// Set version from changelog
-	m.ParseChangelog(clfile)
-
-	// Write go code
-	if err = stamp.NewGoTemplate().Execute(fh, m); err != nil {
-		er.Fatalf("Failed to write go source: %s", err)
-	}
+	return
 }
