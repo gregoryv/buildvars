@@ -39,8 +39,8 @@ type Stamp struct {
 
 func NewStamp() *Stamp {
 	return &Stamp{
-		Package: "main",
-		Revision: "unknown",
+		Package:          "main",
+		Revision:         "unknown",
 		ChangelogVersion: "unknown",
 	}
 }

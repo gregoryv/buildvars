@@ -10,7 +10,7 @@ var (
 	Show    = false
 	Verbose = false
 	sp      *Stamp
-	exit = os.Exit
+	exit    = os.Exit
 )
 
 func init() {

@@ -5,6 +5,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/gregoryv/stamp"
 	"io/ioutil"
 	"log"
@@ -14,17 +15,29 @@ import (
 var (
 	out    = ""
 	clfile = "CHANGELOG.md"
+	help   = false
 )
 
 func init() {
+	flag.BoolVar(&help, "h", help, "Print this help and exit")
 	flag.StringVar(&out, "go", out, "Write Go file, defaults to stdout")
 	flag.StringVar(&clfile, "clfile", clfile, "Changelog to parse for version, keepachangelog format")
 	stamp.InitFlags()
 }
 
+var Usage = func() {
+	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+	flag.PrintDefaults()
+}
+
 func main() {
 	flag.Parse()
 	stamp.AsFlagged()
+
+	if help {
+		Usage()
+		os.Exit(0)
+	}
 
 	var err error
 	fh := os.Stdout
