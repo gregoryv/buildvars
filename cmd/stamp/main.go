@@ -7,7 +7,6 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gregoryv/stamp"
-	"io/ioutil"
 	"log"
 	"os"
 )
@@ -21,7 +20,8 @@ var (
 func init() {
 	flag.BoolVar(&help, "h", help, "Print this help and exit")
 	flag.StringVar(&out, "go", out, "Write Go file, defaults to stdout")
-	flag.StringVar(&clfile, "clfile", clfile, "Changelog to parse for version, keepachangelog format")
+	flag.StringVar(&clfile, "clfile", clfile,
+		"Changelog to parse for version, keepachangelog format")
 	stamp.InitFlags()
 }
 
@@ -56,15 +56,7 @@ func main() {
 		er.Fatalf("Failed to generate build: %s", err)
 	}
 	// Set version from changelog
-	content, err := ioutil.ReadFile(clfile)
-	if err != nil {
-		er.Fatal(err)
-	}
-	changelog := stamp.NewChangelog(content)
-	m.ChangelogVersion, err = changelog.Version()
-	if err != nil {
-		er.Fatal(err)
-	}
+	m.ParseChangelog(clfile)
 
 	// Write go code
 	if err = stamp.NewGoTemplate().Execute(fh, m); err != nil {

@@ -3,6 +3,7 @@ package stamp
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os/exec"
 	"strings"
 	"text/template"
@@ -43,6 +44,19 @@ func NewStamp() *Stamp {
 		Revision:         "unknown",
 		ChangelogVersion: "unknown",
 	}
+}
+
+// ParseChangelog sets ChangelogVersion of this stamp from the given file
+func (s *Stamp) ParseChangelog(file string) (err error) {
+	var content []byte
+	if content, err = ioutil.ReadFile(file); err != nil {
+		return
+	}
+	changelog := NewChangelog(content)
+	if s.ChangelogVersion, err = changelog.Version(); err != nil {
+		return
+	}
+	return
 }
 
 // NewGoTemplate returns a go source template

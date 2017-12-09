@@ -1,6 +1,7 @@
 package stamp
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path"
@@ -15,6 +16,31 @@ func TestNewStamp(t *testing.T) {
 	}
 	if s.ChangelogVersion != exp {
 		t.Errorf("Default ChangelogVersion should be %q", exp)
+	}
+}
+
+func TestParseChangelog(t *testing.T) {
+	s := NewStamp()
+	var err error
+	file := "CHANGELOG.md"
+	fsig := fmt.Sprintf("ParseChangelog(%q)", file)
+	if err = s.ParseChangelog(file); err != nil {
+		t.Errorf("%s should be ok but failed %s", file, err)
+	}
+	if s.ChangelogVersion == "unknown" {
+		t.Errorf("%s should set ChangelogVersion", fsig)
+	}
+
+	shouldFail := []struct {
+		file string
+	}{
+		{"nosuchfile.md"},
+		{"README.md"}, // Bad format
+	}
+	for _, d := range shouldFail {
+		if err = s.ParseChangelog(d.file); err == nil {
+			t.Errorf("ParseChangelog(%q) should fail", d.file)
+		}
 	}
 }
 
