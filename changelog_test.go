@@ -10,18 +10,12 @@ func TestChangelog_Version(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	data := []struct {
-		buf []byte
-		exp string
-	}{
-		{content, "Unreleased"},
-		{[]byte(""), ""},
+	changelog := NewChangelog(content)
+	version, err := changelog.Version()
+	if err != nil {
+		t.Error(err)
 	}
-	for _, d := range data {
-		changelog := NewChangelog(d.buf[:])
-		version, err := changelog.Version()
-		if version != d.exp {
-			t.Error(err)
-		}
+	if version == "" {
+		t.Fail()
 	}
 }
