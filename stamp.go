@@ -1,4 +1,4 @@
-// Package stamp parses build information from git repository
+// Package stamp parses build information from git repository and changelog.md
 package stamp
 
 import (
