@@ -3,7 +3,16 @@ package stamp
 import (
 	"flag"
 	"testing"
+	. "github.com/gregoryv/qual"
 )
+
+
+func Test_InUse(t *testing.T) {
+	s := InUse()
+	Assert(t, Vars{s},
+		s != nil,
+	)
+}
 
 func ExamplePrint() {
 	s := &Stamp{
