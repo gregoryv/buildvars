@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - stamp.InUse() func to get the currently used stamp
 
+### Added
+
+- Flag -p for changing the output package to other than main
+
 ## [0.1.0] 2018-03-28
 
 - Render go source with build information

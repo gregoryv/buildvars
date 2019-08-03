@@ -11,33 +11,24 @@ import (
 	"os"
 )
 
-var (
-	out    = ""
-	clfile = "CHANGELOG.md"
-	help   = false
-)
+func main() {
+	out    := ""
+	clfile := "CHANGELOG.md"
+	help   := false
 
-func init() {
+	s := stamp.NewStamp()
+	flag.StringVar(&s.Package, "p", s.Package, "Package for the output source")
 	flag.BoolVar(&help, "h", help, "Print this help and exit")
 	flag.StringVar(&out, "go", out, "Write Go file, defaults to stdout")
 	flag.StringVar(&clfile, "clfile", clfile,
 		"Changelog to parse for version, keepachangelog format")
 	stamp.InitFlags()
-}
-
-func usage() {
-	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
-	flag.PrintDefaults()
-	os.Exit(0)
-}
-
-func main() {
 	flag.Parse()
 	stamp.AsFlagged()
 	if help {
 		usage()
 	}
-	s := stamp.NewStamp()
+
 	stderr := log.New(os.Stderr, "", 0)
 	var err error
 	if s.Revision, err = stamp.Revision("."); err != nil {
@@ -47,6 +38,12 @@ func main() {
 	if err = writeGoSource(s, out); err != nil {
 		stderr.Fatalf("Failed to write go source: %s", err)
 	}
+}
+
+func usage() {
+	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+	flag.PrintDefaults()
+	os.Exit(0)
 }
 
 func writeGoSource(s *stamp.Stamp, file string) (err error) {
