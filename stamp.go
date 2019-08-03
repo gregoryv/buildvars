@@ -66,7 +66,8 @@ func NewGoTemplate() *template.Template {
 
 // Revision returns the short revision for HEAD
 func Revision(repoRoot string) (string, error) {
-	revision, err := exec.Command("git", "-C", repoRoot, "rev-parse", "--short", "HEAD").CombinedOutput()
+	revision, err := exec.Command("git", "-C", repoRoot, "rev-parse", "--short",
+		"HEAD").CombinedOutput()
 	if err != nil {
 		return "unknown", fmt.Errorf("%s: %s", revision, err)
 	}

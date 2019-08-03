@@ -70,7 +70,8 @@ func Test_GoTemplate(t *testing.T) {
 }
 
 func Test_compile_template(t *testing.T) {
-	out, err := exec.Command("go", "build", "-o", path.Join(os.TempDir(), "stamp"),
+	bin := path.Join(os.TempDir(), "stamp")
+	out, err := exec.Command("go", "build", "-o", bin,
 		"github.com/gregoryv/stamp/cmd/stamp").CombinedOutput()
 	if err != nil {
 		t.Errorf("%s: %s", out, err)
