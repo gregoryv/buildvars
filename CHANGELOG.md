@@ -7,11 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 
+- Flag -p for changing the output package to other than main
 - stamp.InUse() func to get the currently used stamp
 
-### Added
-
-- Flag -p for changing the output package to other than main
 
 ## [0.1.0] 2018-03-28
 

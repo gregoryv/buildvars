@@ -3,15 +3,14 @@ package stamp
 import (
 	"flag"
 	"testing"
-	. "github.com/gregoryv/qual"
 )
 
 
 func Test_InUse(t *testing.T) {
 	s := InUse()
-	Assert(t, Vars{s},
-		s != nil,
-	)
+	if s == nil {
+		t.Error("InUse should always return a Stamp, got nil")
+	}
 }
 
 func ExamplePrint() {
