@@ -27,12 +27,8 @@ Example main.go
 		"flag"
 	)
 
-	func init() {
-		// Add -v and -vv flags
-		stamp.InitFlags()
-	}
-
 	func main() {
+		stamp.InitFlags() // Defines -v and -vv flags
 		flag.Parse()
 		stamp.AsFlagged()
 		//...
