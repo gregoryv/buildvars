@@ -20,14 +20,13 @@ func init() {
 import "github.com/gregoryv/stamp"
 
 func init() {
-    s := &stamp.Stamp{
-	    Package: "{{.Package}}",
-	    Revision: "{{.Revision}}",
-	    ChangelogVersion: "{{.ChangelogVersion}}",
-    }
-    stamp.Use(s)
+	s := &stamp.Stamp{
+		Package:          "{{.Package}}",
+		Revision:         "{{.Revision}}",
+		ChangelogVersion: "{{.ChangelogVersion}}",
+	}
+	stamp.Use(s)
 }
-
 `))
 }
 
