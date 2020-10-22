@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func Test_InUse(t *testing.T) {
 	s := InUse()
 	if s == nil {

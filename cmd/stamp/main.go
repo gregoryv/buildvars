@@ -12,9 +12,9 @@ import (
 )
 
 func main() {
-	out    := ""
+	out := ""
 	clfile := "CHANGELOG.md"
-	help   := false
+	help := false
 
 	s := stamp.NewStamp()
 	flag.StringVar(&s.Package, "p", s.Package, "Package for the output source")
