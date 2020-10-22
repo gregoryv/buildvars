@@ -2,36 +2,47 @@ package stamp
 
 import (
 	"flag"
+	"os"
 	"testing"
 )
 
-func Test_InUse(t *testing.T) {
-	s := InUse()
-	if s == nil {
-		t.Error("InUse should always return a Stamp, got nil")
-	}
-}
-
 func ExamplePrint() {
-	s := &Stamp{
+	DefaultStamp = &Stamp{
 		Revision:         "rev",
 		ChangelogVersion: "1.0.2",
 		Show:             true,
 	}
-	Use(s)
 	Print()
 	//output: 1.0.2
 }
 
 func ExamplePrintDetails() {
+	DefaultStamp = &Stamp{
+		Revision:         "6e6046c",
+		ChangelogVersion: "1.0.0",
+		Verbose:          true,
+	}
+	PrintDetails()
+	//output: 1.0.0-6e6046c
+}
+
+func ExampleStamp_WriteTo() {
 	s := &Stamp{
 		Revision:         "6e6046c",
 		ChangelogVersion: "1.0.0",
 		Verbose:          true,
 	}
-	Use(s)
-	PrintDetails()
+	s.WriteTo(os.Stdout)
 	//output: 1.0.0-6e6046c
+}
+
+func ExampleStamp_WriteTo_noOutput() {
+	s := &Stamp{
+		Revision:         "6e6046c",
+		ChangelogVersion: "1.0.0",
+	}
+	s.WriteTo(os.Stdout)
+	//output:
 }
 
 func TestInitFlags(t *testing.T) {

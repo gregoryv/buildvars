@@ -10,15 +10,6 @@ var (
 	exit         = os.Exit
 )
 
-// Use sets the stamp to use when printing details
-func Use(stamp *Stamp) {
-	DefaultStamp = stamp
-}
-
-func InUse() *Stamp {
-	return DefaultStamp
-}
-
 // Regiters -v and -vv flags
 func InitFlags() {
 	DefaultStamp.InitFlags(flag.CommandLine)
