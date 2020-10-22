@@ -20,6 +20,25 @@ func TestNewStamp(t *testing.T) {
 	}
 }
 
+func ExampleStamp_WriteTo() {
+	s := &Stamp{
+		Revision:         "6e6046c",
+		ChangelogVersion: "1.0.0",
+		Verbose:          true,
+	}
+	s.WriteTo(os.Stdout)
+	//output: 1.0.0-6e6046c
+}
+
+func ExampleStamp_WriteTo_noOutput() {
+	s := &Stamp{
+		Revision:         "6e6046c",
+		ChangelogVersion: "1.0.0",
+	}
+	s.WriteTo(os.Stdout)
+	//output:
+}
+
 func TestParseChangelog(t *testing.T) {
 	s := NewStamp()
 	ok := asserter.Wrap(t).Ok

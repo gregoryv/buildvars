@@ -7,30 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"os/exec"
-	"strings"
-	"text/template"
 )
-
-var (
-	goSource *template.Template
-)
-
-func init() {
-	goSource = template.Must(template.New("main").Parse(
-		`package {{.Package}}
-
-import "github.com/gregoryv/stamp"
-
-func init() {
-	stamp.DefaultStamp = &stamp.Stamp{
-		Package:          "{{.Package}}",
-		Revision:         "{{.Revision}}",
-		ChangelogVersion: "{{.ChangelogVersion}}",
-	}
-}
-`))
-}
 
 func NewStamp() *Stamp {
 	return &Stamp{
@@ -50,7 +27,7 @@ type Stamp struct {
 	Verbose bool
 }
 
-// Regiters -v and -vv flags
+// Registers -v and -vv flags on the given flagset
 func (me *Stamp) InitFlags(fs *flag.FlagSet) {
 	fs.BoolVar(&me.Show, "v", me.Show, "Print version and exit")
 	fs.BoolVar(&me.Verbose, "vv", me.Verbose,
@@ -58,7 +35,6 @@ func (me *Stamp) InitFlags(fs *flag.FlagSet) {
 	)
 }
 
-// WriteTo
 func (me *Stamp) WriteTo(w io.Writer) (int64, error) {
 	switch {
 	case me.Show:
@@ -72,29 +48,14 @@ func (me *Stamp) WriteTo(w io.Writer) (int64, error) {
 }
 
 // ParseChangelog sets ChangelogVersion of this stamp from the given file
-func (s *Stamp) ParseChangelog(file string) (err error) {
+func (me *Stamp) ParseChangelog(file string) (err error) {
 	var content []byte
 	if content, err = ioutil.ReadFile(file); err != nil {
 		return
 	}
 	changelog := NewChangelog(content)
-	if s.ChangelogVersion, err = changelog.Version(); err != nil {
+	if me.ChangelogVersion, err = changelog.Version(); err != nil {
 		return
 	}
 	return
-}
-
-// NewGoTemplate returns a go source template
-func NewGoTemplate() *template.Template {
-	return goSource
-}
-
-// Revision returns the short revision for HEAD
-func Revision(repoRoot string) (string, error) {
-	revision, err := exec.Command("git", "-C", repoRoot, "rev-parse", "--short",
-		"HEAD").CombinedOutput()
-	if err != nil {
-		return "unknown", fmt.Errorf("%s: %s", revision, err)
-	}
-	return strings.TrimSpace(string(revision)), nil
 }
