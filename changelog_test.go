@@ -6,7 +6,7 @@ import (
 )
 
 func TestChangelog_Version(t *testing.T) {
-	content, err := ioutil.ReadFile("CHANGELOG.md")
+	content, err := ioutil.ReadFile("changelog.md")
 	if err != nil {
 		panic(err)
 	}

@@ -1,14 +1,15 @@
 //Command stamp generates go source code with build information.
 //
-//go:generate stamp -go build_stamp.go -clfile ../../CHANGELOG.md
+//go:generate stamp -go build_stamp.go -clfile ../../changelog.md
 package main
 
 import (
 	"flag"
 	"fmt"
-	"github.com/gregoryv/stamp"
 	"log"
 	"os"
+
+	"github.com/gregoryv/stamp"
 )
 
 func main() {

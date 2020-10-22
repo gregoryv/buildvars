@@ -29,7 +29,7 @@ func InitFlags() {
 }
 
 func Print() {
-	fmt.Print(DefaultStamp.ChangelogVersion)
+	DefaultStamp.WriteTo(os.Stdout)
 }
 
 func PrintDetails() {

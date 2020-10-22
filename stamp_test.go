@@ -1,11 +1,12 @@
 package stamp
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"path"
 	"testing"
+
+	"github.com/gregoryv/asserter"
 )
 
 func TestNewStamp(t *testing.T) {
@@ -21,27 +22,12 @@ func TestNewStamp(t *testing.T) {
 
 func TestParseChangelog(t *testing.T) {
 	s := NewStamp()
-	var err error
-	file := "CHANGELOG.md"
-	fsig := fmt.Sprintf("ParseChangelog(%q)", file)
-	if err = s.ParseChangelog(file); err != nil {
-		t.Errorf("%s should be ok but failed %s", file, err)
-	}
-	if s.ChangelogVersion == "unknown" {
-		t.Errorf("%s should set ChangelogVersion", fsig)
-	}
+	ok := asserter.Wrap(t).Ok
+	ok(s.ParseChangelog("changelog.md"))
 
-	shouldFail := []struct {
-		file string
-	}{
-		{"nosuchfile.md"},
-		{"README.md"}, // Bad format
-	}
-	for _, d := range shouldFail {
-		if err = s.ParseChangelog(d.file); err == nil {
-			t.Errorf("ParseChangelog(%q) should fail", d.file)
-		}
-	}
+	bad := asserter.Wrap(t).Bad
+	bad(s.ParseChangelog("nosuchfile.md"))
+	bad(s.ParseChangelog("README.md"))
 }
 
 func Test_Revision(t *testing.T) {
@@ -59,7 +45,6 @@ func Test_Revision(t *testing.T) {
 	if err == nil {
 		t.Error("Revision() should fail when not in git repository")
 	}
-
 }
 
 func Test_GoTemplate(t *testing.T) {

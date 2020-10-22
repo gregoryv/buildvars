@@ -1,8 +1,10 @@
-// Package stamp parses build information from git repository and changelog.md
+// Package stamp parses build information from git repository and
+// changelog.md
 package stamp
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os/exec"
 	"strings"
@@ -30,6 +32,14 @@ func init() {
 `))
 }
 
+func NewStamp() *Stamp {
+	return &Stamp{
+		Package:          "main",
+		Revision:         "unknown",
+		ChangelogVersion: "unknown",
+	}
+}
+
 // Stamp collects identifying information about a software library
 type Stamp struct {
 	Package          string
@@ -37,12 +47,10 @@ type Stamp struct {
 	ChangelogVersion string
 }
 
-func NewStamp() *Stamp {
-	return &Stamp{
-		Package:          "main",
-		Revision:         "unknown",
-		ChangelogVersion: "unknown",
-	}
+// WriteTo
+func (me *Stamp) WriteTo(w io.Writer) (int64, error) {
+	n, err := fmt.Fprint(w, DefaultStamp.ChangelogVersion)
+	return int64(n), err
 }
 
 // ParseChangelog sets ChangelogVersion of this stamp from the given file
