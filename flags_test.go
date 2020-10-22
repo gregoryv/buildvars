@@ -16,6 +16,7 @@ func ExamplePrint() {
 	s := &Stamp{
 		Revision:         "rev",
 		ChangelogVersion: "1.0.2",
+		Show:             true,
 	}
 	Use(s)
 	Print()
@@ -26,6 +27,7 @@ func ExamplePrintDetails() {
 	s := &Stamp{
 		Revision:         "6e6046c",
 		ChangelogVersion: "1.0.0",
+		Verbose:          true,
 	}
 	Use(s)
 	PrintDetails()
@@ -54,9 +56,10 @@ func TestAsFlagged(t *testing.T) {
 			t.Errorf("Should exit with code 0: %v", code)
 		}
 	}
-	Show = true
 	AsFlagged()
-	Show = false
-	Verbose = true
+	DefaultStamp.Show = true
+	AsFlagged()
+	DefaultStamp.Show = false
+	DefaultStamp.Verbose = true
 	AsFlagged()
 }

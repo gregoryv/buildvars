@@ -3,6 +3,7 @@
 package stamp
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -45,12 +46,30 @@ type Stamp struct {
 	Package          string
 	Revision         string
 	ChangelogVersion string
+
+	Show    bool
+	Verbose bool
+}
+
+// Regiters -v and -vv flags
+func (me *Stamp) InitFlags(fs *flag.FlagSet) {
+	fs.BoolVar(&me.Show, "v", me.Show, "Print version and exit")
+	fs.BoolVar(&me.Verbose, "vv", me.Verbose,
+		"Print version with details and exit",
+	)
 }
 
 // WriteTo
 func (me *Stamp) WriteTo(w io.Writer) (int64, error) {
-	n, err := fmt.Fprint(w, DefaultStamp.ChangelogVersion)
-	return int64(n), err
+	switch {
+	case me.Show:
+		n, err := fmt.Fprint(w, me.ChangelogVersion)
+		return int64(n), err
+	case me.Verbose:
+		n, err := fmt.Fprintf(w, "%s-%s", me.ChangelogVersion, me.Revision)
+		return int64(n), err
+	}
+	return 0, nil
 }
 
 // ParseChangelog sets ChangelogVersion of this stamp from the given file

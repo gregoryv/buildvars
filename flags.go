@@ -2,13 +2,10 @@ package stamp
 
 import (
 	"flag"
-	"fmt"
 	"os"
 )
 
 var (
-	Show         = false
-	Verbose      = false
 	DefaultStamp = &Stamp{}
 	exit         = os.Exit
 )
@@ -24,8 +21,7 @@ func InUse() *Stamp {
 
 // Regiters -v and -vv flags
 func InitFlags() {
-	flag.BoolVar(&Show, "v", Show, "Print version and exit")
-	flag.BoolVar(&Verbose, "vv", Verbose, "Print version with details and exit")
+	DefaultStamp.InitFlags(flag.CommandLine)
 }
 
 func Print() {
@@ -33,17 +29,13 @@ func Print() {
 }
 
 func PrintDetails() {
-	fmt.Printf("%s-%s", DefaultStamp.ChangelogVersion, DefaultStamp.Revision)
+	DefaultStamp.WriteTo(os.Stdout)
 }
 
 // AsFlagged shows information according to flags and exits with code 0
 func AsFlagged() {
-	if Show {
-		Print()
-		exit(0)
-	}
-	if Verbose {
-		PrintDetails()
+	if DefaultStamp.Show || DefaultStamp.Verbose {
+		DefaultStamp.WriteTo(os.Stdout)
 		exit(0)
 	}
 }
